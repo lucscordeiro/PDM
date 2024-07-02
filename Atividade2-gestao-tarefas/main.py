@@ -1,59 +1,17 @@
 import flet as ft
-from CustomButton import CustomButton  # Assuming CustomButton is correctly implemented
+from TaskApp import TaskApp
 
 def main(page: ft.Page):
-    listTask = []
+    page.title = "Task App"
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.update()
 
-    task = ft.TextField(label="Task")
-    listDisplay = ft.Text(value="", visible=True)
+    # create application instance
+    app = TaskApp()
+    # app1 = TaskApp()
+    # app2 = TaskApp()
 
-    def updateListDisplay():
-        # Update the displayed text with items from the list
-        listDisplay.value = "\n".join(listTask)
+    # add application's root control to the page
+    page.add(app)
 
-    def clickBtnAddTask(e):
-        taskText = task.value.strip()
-        if taskText:
-            listTask.append(taskText)
-            task.value = ""  # Clear the text field
-            updateListDisplay()
-            page.update()
-
-    def clickBtnToogleVisibility(e):
-        listDisplay.visible = not listDisplay.visible
-        page.update()
-
-    def clickBtnClearList(e):
-        listTask.clear()
-        updateListDisplay()
-        page.update()
-
-    btnAddTask = CustomButton(
-        text="Add",
-        bgcolor=ft.colors.BLUE,
-        color=ft.colors.WHITE,
-        on_click=clickBtnAddTask,
-        icon=None
-    )
-
-    btnToogleVisibility = CustomButton(
-        text="Toggle Visibility",
-        bgcolor=ft.colors.GREEN,
-        color=ft.colors.WHITE,
-        on_click=clickBtnToogleVisibility,
-        icon=None
-    )
-
-    btnClearList = CustomButton(
-        text="Clear List",
-        bgcolor=ft.colors.RED,
-        color=ft.colors.WHITE,
-        on_click=clickBtnClearList,
-        icon=None
-    )
-
-    # Add components to the page
-    page.add(task, btnAddTask, btnToogleVisibility, btnClearList, listDisplay)
-
-# Launch the app with the main function as the target
 ft.app(target=main)
