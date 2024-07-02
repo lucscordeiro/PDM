@@ -1,51 +1,59 @@
 import flet as ft
-from CustomButton import CustomButton
+from CustomButton import CustomButton  # Assuming CustomButton is correctly implemented
 
 def main(page: ft.Page):
-    
-    task = ft.TextField(label="Task")
     listTask = []
-    
-    # listTask = ft.List(items=task.value)
+
+    task = ft.TextField(label="Task")
+    listDisplay = ft.Text(value="", visible=True)
+
+    def updateListDisplay():
+        # Update the displayed text with items from the list
+        listDisplay.value = "\n".join(listTask)
 
     def clickBtnAddTask(e):
-        btnAddTask.addTask()
-        listTask.append(task.value)
-        print(listTask) 
-        page.update()
-    
+        taskText = task.value.strip()
+        if taskText:
+            listTask.append(taskText)
+            task.value = ""  # Clear the text field
+            updateListDisplay()
+            page.update()
+
     def clickBtnToogleVisibility(e):
-        btnAddTask.toogleVisibility()
+        listDisplay.visible = not listDisplay.visible
         page.update()
-    
+
     def clickBtnClearList(e):
-        btnAddTask.clearList()
+        listTask.clear()
+        updateListDisplay()
         page.update()
 
     btnAddTask = CustomButton(
-        text = "Add",
-        bgcolor = ft.colors.BLUE,
-        color = ft.colors.WHITE,
+        text="Add",
+        bgcolor=ft.colors.BLUE,
+        color=ft.colors.WHITE,
         on_click=clickBtnAddTask,
         icon=None
     )
-    
+
     btnToogleVisibility = CustomButton(
-        text = "Visibility",
-        bgcolor = ft.colors.GREEN,
-        color = ft.colors.WHITE,
+        text="Toggle Visibility",
+        bgcolor=ft.colors.GREEN,
+        color=ft.colors.WHITE,
         on_click=clickBtnToogleVisibility,
         icon=None
     )
 
     btnClearList = CustomButton(
-        text = "Clear",
-        bgcolor = ft.colors.RED,
-        color = ft.colors.WHITE,
+        text="Clear List",
+        bgcolor=ft.colors.RED,
+        color=ft.colors.WHITE,
         on_click=clickBtnClearList,
         icon=None
     )
 
-    page.add(task, btnAddTask, btnClearList, btnToogleVisibility)
+    # Add components to the page
+    page.add(task, btnAddTask, btnToogleVisibility, btnClearList, listDisplay)
 
+# Launch the app with the main function as the target
 ft.app(target=main)
